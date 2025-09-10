@@ -140,8 +140,8 @@ for group in groups:
     ])
 
 screens = [
-    Screen(top=my_bar(['7', '8', '9'])),
     Screen(top=my_bar(['4', '5', '6'], primary=True)),
+    Screen(top=my_bar(['7', '8', '9'])),
     Screen(top=my_bar(['1', '2', '3'])),
 ]
 

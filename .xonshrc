@@ -1,0 +1,200 @@
+# ~/.xonshrc - Xonsh configuration
+
+# =============================================================================
+# Environment Variables
+# =============================================================================
+
+$EDITOR = 'nvim'
+$VISUAL = 'nvim'
+$BROWSER = 'firefox'
+
+# Rust/Cargo paths
+$PATH.append(str($HOME + '/.cargo/bin'))
+
+# Ensure local bin is in PATH
+$PATH.insert(0, str($HOME + '/.local/bin'))
+
+# =============================================================================
+# Prompt Configuration
+# =============================================================================
+
+def custom_prompt():
+    import os
+    
+    # Dracula color scheme ANSI codes
+    # Background: #282a36
+    # Current Line: #44475a
+    # Foreground: #f8f8f2
+    # Comment: #6272a4
+    # Cyan: #8be9fd
+    # Green: #50fa7b
+    # Orange: #ffb86c
+    # Pink: #ff79c6
+    # Purple: #bd93f9
+    # Red: #ff5555
+    # Yellow: #f1fa8c
+    
+    PURPLE = '\033[38;2;189;147;249m'  # For directory
+    PINK = '\033[38;2;255;121;198m'    # For git branch
+    CYAN = '\033[38;2;139;233;253m'    # Alternative color
+    GREEN = '\033[38;2;80;250;123m'    # Alternative color
+    RESET = '\033[0m'
+    
+    # Get current working directory (abbreviated home as ~)
+    cwd = str($PWD).replace(str($HOME), '~')
+    
+    # Try to get git branch if in a git repo
+    try:
+        branch = $(git branch --show-current 2>/dev/null).strip()
+        git_info = f' ({branch})' if branch else ''
+    except:
+        git_info = ''
+    
+    return f'{PURPLE}{cwd}{PINK}{git_info}{RESET} λ '
+
+$PROMPT = custom_prompt
+
+# =============================================================================
+# Aliases
+# =============================================================================
+
+# Navigation
+aliases['..'] = 'cd ..'
+aliases['...'] = 'cd ../..'
+aliases['~'] = 'cd ~'
+aliases['-'] = 'cd -'
+
+# Listing files
+aliases['ls'] = 'lsd -lah --color=always --group-directories-first'
+aliases['ll'] = 'ls -lah --color=auto'
+aliases['la'] = 'ls -A --color=auto'
+aliases['l'] = 'ls -CF --color=auto'
+
+# Common commands
+aliases['grep'] = 'grep --color=auto'
+aliases['cp'] = 'cp -i'  # Interactive (ask before overwrite)
+aliases['mv'] = 'mv -i'
+aliases['rm'] = 'rm -i'
+
+# Git shortcuts
+aliases['gs'] = 'git status'
+aliases['ga'] = 'git add'
+aliases['gc'] = 'git commit'
+aliases['gp'] = 'git push'
+aliases['gl'] = 'git log --oneline --graph --decorate'
+aliases['gd'] = 'git diff'
+
+# Arch-specific
+aliases['pacup'] = 'sudo pacman -Syu'
+aliases['pacin'] = 'sudo pacman -S'
+aliases['pacrem'] = 'sudo pacman -R'
+aliases['pacsearch'] = 'pacman -Ss'
+
+# Rust/Cargo
+aliases['cb'] = 'cargo build'
+aliases['cr'] = 'cargo run'
+aliases['ct'] = 'cargo test'
+aliases['cc'] = 'cargo check'
+aliases['cw'] = 'cargo watch -x check'
+aliases['ci'] = 'cargo init'
+
+# =============================================================================
+# Custom Functions
+# =============================================================================
+
+def mkcd(args):
+    """Create directory and cd into it"""
+    if not args:
+        print("Usage: mkcd <directory>")
+        return
+    dir_name = args[0]
+    mkdir -p @(dir_name)
+    cd @(dir_name)
+
+aliases['mkcd'] = mkcd
+
+def extract(args):
+    """Extract various archive formats"""
+    if not args:
+        print("Usage: extract <archive>")
+        return
+    
+    file = args[0]
+    
+    if file.endswith('.tar.gz') or file.endswith('.tgz'):
+        tar -xzf @(file)
+    elif file.endswith('.tar.bz2') or file.endswith('.tbz2'):
+        tar -xjf @(file)
+    elif file.endswith('.tar.xz'):
+        tar -xJf @(file)
+    elif file.endswith('.zip'):
+        unzip @(file)
+    elif file.endswith('.rar'):
+        unrar x @(file)
+    elif file.endswith('.7z'):
+        7z x @(file)
+    else:
+        print(f"Unknown archive format: {file}")
+
+aliases['extract'] = extract
+
+def rustdoc(args):
+    """Open Rust documentation in browser"""
+    if args:
+        # Open specific crate docs
+        cargo doc --open --package @(args[0])
+    else:
+        # Open current project docs
+        cargo doc --open
+
+aliases['rustdoc'] = rustdoc
+
+# =============================================================================
+# Xonsh Settings
+# =============================================================================
+
+# Enable completions
+$AUTO_CD = True  # cd by just typing directory name
+$AUTO_PUSHD = True  # Automatically push directories to stack
+$COMPLETIONS_CONFIRM = True  # Show completions without pressing tab twice
+$CASE_SENSITIVE_COMPLETIONS = False  # Case-insensitive tab completion
+
+# History settings
+$HISTCONTROL = 'ignoredups'  # Don't save duplicate commands
+$XONSH_HISTORY_SIZE = (10000, 'commands')  # Keep 10k commands in history
+
+# Better error messages
+$XONSH_SHOW_TRACEBACK = True
+
+# =============================================================================
+# Xontribs (plugins)
+# =============================================================================
+
+# Load useful xontribs if installed
+# To install: xpip install xontrib-name
+# Examples:
+# xontrib load autojump  # Fast directory jumping
+# xontrib load vox       # Python venv management
+# xontrib load z         # Frecency-based directory jumping
+
+# =============================================================================
+# Welcome message (optional - comment out if you don't want it)
+# =============================================================================
+
+# print(f"{BOLD_GREEN}Welcome to Xonsh!{RESET}")
+# print(f"Python {PYTHON_VERSION_INFO[0]}.{PYTHON_VERSION_INFO[1]}.{PYTHON_VERSION_INFO[2]}")
+
+# =============================================================================
+# Import commonly used Python modules
+# =============================================================================
+
+import os
+import sys
+from pathlib import Path
+
+# Quick helper to get current git branch
+def git_branch():
+    try:
+        return $(git branch --show-current 2>/dev/null).strip()
+    except:
+        return None

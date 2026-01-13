@@ -56,6 +56,7 @@ keys = [
     Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle layout"),
+    Key([mod], "l", lazy.spawn("xlock"), desc="Lock Screen"),
 ]
 #+END_SRC
 
@@ -152,8 +153,8 @@ def startup_complete_hook():
     subprocess.call([os.path.expanduser('~/.config/qtile/autostart.sh')])
     print("Moving groups on startup")
     qtile.groups_map['1'].cmd_toscreen(0)
-    qtile.groups_map['4'].cmd_toscreen(1)
-    qtile.groups_map['7'].cmd_toscreen(2)
+    qtile.groups_map['4'].cmd_toscreen(2)
+    qtile.groups_map['7'].cmd_toscreen(1)
 #+END_SRC
 
 

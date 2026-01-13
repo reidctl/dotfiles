@@ -10,8 +10,8 @@ import os, subprocess
 groups = [Group(str(i)) for i in range(1, 10)]
 
 group_screen_map = {
-    '4': 1, '5': 1, '6': 1,
-    '7': 0, '8': 0, '9': 0,
+    '4': 0, '5': 0, '6': 0,
+    '7': 1, '8': 1, '9': 1,
     '1': 2, '2': 2, '3': 2
 }
 
@@ -22,8 +22,8 @@ for group in groups:
     ])
 
 screens = [
-    Screen(top=my_bar(['7', '8', '9'])),
     Screen(top=my_bar(['4', '5', '6'], primary=True)),
+    Screen(top=my_bar(['7', '8', '9'])),
     Screen(top=my_bar(['1', '2', '3'])),
 ]
 
@@ -34,6 +34,6 @@ def startup_complete_hook():
     subprocess.call([os.path.expanduser('~/.config/qtile/autostart.sh')])
     print("Moving groups on startup")
     qtile.groups_map['1'].cmd_toscreen(0)
-    qtile.groups_map['4'].cmd_toscreen(1)
-    qtile.groups_map['7'].cmd_toscreen(2)
+    qtile.groups_map['4'].cmd_toscreen(2)
+    qtile.groups_map['7'].cmd_toscreen(1)
 # Host: Work:1 ends here

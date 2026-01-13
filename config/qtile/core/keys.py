@@ -28,5 +28,6 @@ keys = [
     Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle layout"),
+    Key([mod], "l", lazy.spawn("xlock"), desc="Lock Screen"),
 ]
 # Keybindings:1 ends here

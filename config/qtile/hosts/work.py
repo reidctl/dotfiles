@@ -31,6 +31,7 @@ floating_layout = layout.Floating(float_rules=[*layout.Floating.default_float_ru
 
 @hook.subscribe.startup_complete
 def startup_complete_hook():
+    subprocess.Popen(["dunst"])
     subprocess.call([os.path.expanduser('~/.config/qtile/autostart.sh')])
     print("Moving groups on startup")
     qtile.groups_map['1'].cmd_toscreen(0)

@@ -2,7 +2,7 @@
 from libqtile import bar, widget
 
 widget_defaults = dict(
-    font="JetBrainsMono Nerd Font",
+    font="Inter",
     fontsize=13,
     padding=3,
 )

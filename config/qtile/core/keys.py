@@ -17,6 +17,7 @@ keys = [
     Key([mod], "Escape", lazy.spawn("~/.config/rofi/powermenu.sh"), desc="Power menu"),
     Key([mod, "shift"], "s", lazy.spawn("flameshot gui"), desc="Screenshot"),
     Key([mod, "shift"], "e", lazy.spawn(editor), desc="Doom Emacs"),
+    Key([mod, "shift"], "o", lazy.spawn("obsidian"), desc="Obsidian"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "shift"], "q", lazy.shutdown(), desc="Logout"),
     Key([mod], "h", lazy.layout.left(), desc="Focus left"),

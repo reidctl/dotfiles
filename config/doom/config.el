@@ -21,8 +21,8 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
-;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13 :weight 'regular)
+      doom-variable-pitch-font (font-spec :family "Inter" :size 14))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -80,3 +80,13 @@
   (setq yas-snippet-dirs
         '("~/.doom.d/snippets"
           "~/.emacs.d/.local/etc/snippets")))
+
+
+(after! org
+  (setq org-fontify-quote-and-verse-blocks t)
+  (set-face-attribute 'org-document-title nil :height 1.3))
+
+(custom-set-faces!
+  '(org-level-1 :height 1.2 :weight bold)
+  '(org-level-2 :height 1.15 :weight semi-bold)
+  '(org-level-3 :height 1.1 :weight semi-bold))
